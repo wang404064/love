@@ -4,59 +4,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <style>
         body {
-            background: #1a1a1a;
+            background: linear-gradient(to bottom, #1a1a2e, #16213e); /* 渐变星空背景 */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
+        
+        /* 爱心样式（放大+渐变色） */
         .heart {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            background: red;
+            width: 30px;
+            height: 30px;
             transform: rotate(45deg);
-            animation: fall 1s linear infinite;
+            animation: fall 2s ease-in-out infinite;
         }
         .heart::before, .heart::after {
             content: '';
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 30px;
+            height: 30px;
             background: inherit;
             border-radius: 50%;
         }
         .heart::before {
-            top: -10px;
+            top: -15px;
         }
         .heart::after {
-            left: -10px;
+            left: -15px;
         }
+        
+        /* 文字样式（动态浮动效果） */
+        .message {
+            position: fixed;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 24px;
+            font-family: 'Microsoft YaHei', sans-serif;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: float 3s ease-in-out infinite;
+            z-index: 10;
+        }
+        
+        /* 动画关键帧 */
         @keyframes fall {
-            to {
-                transform: translateY(100vh) rotate(45deg);
+            0% {
+                top: -50px;
+                opacity: 1;
+            }
+            100% {
+                top: 100vh;
                 opacity: 0;
+            }
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-20px);
             }
         }
     </style>
 </head>
 <body onclick="shootHearts()">
     <div id="container"></div>
+    <div class="message">愿所有病痛都被爱治愈，早日康复呀～❤️</div>
     
     <script>
         function shootHearts() {
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 60; i++) {
                 const heart = document.createElement('div');
                 heart.className = 'heart';
+                
+                // 随机位置（从屏幕顶部不同位置落下）
                 heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDelay = Math.random() * 2 + 's';
-                heart.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                heart.style.top = '-50px'; // 从屏幕上方外开始
+                
+                // 随机动画延迟和颜色（更柔和的粉色系）
+                heart.style.animationDelay = Math.random() * 1.5 + 's';
+                const hue = Math.random() * 30 + 340; // 限定粉色到红色区间
+                heart.style.backgroundColor = `hsl(${hue}, 100%, 65%)`;
+                
                 document.body.appendChild(heart);
                 
-                // �Զ��������ı�����������
-                setTimeout(() => heart.remove(), 2000);
+                // 自动清理爱心
+                setTimeout(() => heart.remove(), 3000);
             }
         }
     </script>
