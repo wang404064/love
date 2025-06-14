@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style>
+        body {
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            cursor: pointer;
+        }
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: red;
+            transform: rotate(45deg);
+            animation: fall 1s linear infinite;
+        }
+        .heart::before, .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: inherit;
+            border-radius: 50%;
+        }
+        .heart::before {
+            top: -10px;
+        }
+        .heart::after {
+            left: -10px;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(45deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body onclick="shootHearts()">
+    <div id="container"></div>
+    
+    <script>
+        function shootHearts() {
+            for (let i = 0; i < 50; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                heart.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                document.body.appendChild(heart);
+                
+                // 自动清理爱心避免性能问题
+                setTimeout(() => heart.remove(), 2000);
+            }
+        }
+    </script>
+</html>
